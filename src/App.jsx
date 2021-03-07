@@ -4,6 +4,8 @@ import { Button } from './components/button/Button'
 
 const App = () => {
 
+  const [filterWithColor, setFilterWithColor] = useState()
+  const [filterWithSize, setFilterWithSize] = useState()
   const [result, setResult] = useState()
   const [selectedColor, setSelectedColor] = useState()
   const [selectedSize, setSelectedSize] = useState()
@@ -16,13 +18,13 @@ const App = () => {
   // console.log('skus', skus)
 
   useEffect(() => {
-    console.log('result', result)
-  }, [result])
+    // console.log('filterWithColor', filterWithColor)
+    // console.log('filterWithSize', filterWithSize)
+    // console.log('result', result)
+  }, [filterWithColor, filterWithSize, result])
 
   const renderColors = () => {
     const colors = options[0].values.map((color) => {
-      console.log('selectedColor', selectedColor)
-      console.log('color.id', color.id)
       return <Button id={color.id} onClick={onClickColor} isChecked={selectedColor == color.id}>{color.value}</Button>
     })
     return (
@@ -36,13 +38,20 @@ const App = () => {
     const colorResult = skus.filter((skus) => {
       return skus.variants.color == e.currentTarget.value
     })
-    setResult(colorResult)
+    setFilterWithColor(colorResult)
     setSelectedColor(e.currentTarget.value)
+    setFilterWithSize()
+    setSelectedSize()
+    setSelectedSleeve()
+    setResult()
   }
 
   const renderSizes = () => {
     const sizes = options[1].values.map((size) => {
-      return <Button id={size.id} onClick={onClickSize} isDisable={!selectedColor} isChecked={selectedSize == size.id} >{size.value}</Button>
+      let haveSize = filterWithColor && filterWithColor.find((item) => {
+        return item.variants.size == size.id
+      })
+      return <Button id={size.id} onClick={onClickSize} isDisable={!selectedColor || !haveSize} isChecked={selectedSize == size.id} >{size.value}</Button>
     })
     return (
       <>
@@ -52,16 +61,21 @@ const App = () => {
     )
   }
   const onClickSize = (e) => {
-    const sizeResult = result && result.filter((size) => {
+    const sizeResult = filterWithColor && filterWithColor.filter((size) => {
       return size.variants.size == e.currentTarget.value
     })
-    setResult(sizeResult)
+    setFilterWithSize(sizeResult)
     setSelectedSize(e.currentTarget.value)
+    setSelectedSleeve()
+    setResult()
   }
 
   const renderSleeves = () => {
     const sleeves = options[2].values.map((sleeve) => {
-      return <Button id={sleeve.id} onClick={onClickSleeve} isDisable={!selectedSize} isChecked={selectedSleeve == sleeve.id}>{sleeve.value}</Button>
+      let haveSleeve = filterWithSize && filterWithSize.find((item) => {
+        return item.variants.sleeve == sleeve.id
+      })
+      return <Button id={sleeve.id} onClick={onClickSleeve} isDisable={!selectedSize || !haveSleeve} isChecked={selectedSleeve == sleeve.id}>{sleeve.value}</Button>
     })
     return (
       <>
@@ -71,7 +85,7 @@ const App = () => {
     )
   }
   const onClickSleeve = (e) => {
-    const sleeveResult = result && result.filter((sleeve) => {
+    const sleeveResult = filterWithSize && filterWithSize.filter((sleeve) => {
       return sleeve.variants.sleeve == e.currentTarget.value
     })
     setResult(sleeveResult)

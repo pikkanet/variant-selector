@@ -5,7 +5,6 @@ export const Button = ({ children, isDisable = false, isChecked, onClick, id }) 
 
   let style
   if (isDisable) {
-    console.log('disable', isDisable)
     style = styles.disable
   } else if (isChecked) {
     style = styles.checked
