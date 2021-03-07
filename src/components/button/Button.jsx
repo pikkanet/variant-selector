@@ -1,19 +1,19 @@
 import React from 'react'
 import styles from './Button.style'
 
-export const Button = ({ children, isDisable, isCheck, onClick, id }) => {
+export const Button = ({ children, isDisable = false, isChecked, onClick, id }) => {
 
   let style
   if (isDisable) {
+    console.log('disable', isDisable)
     style = styles.disable
-  } else if (isCheck) {
+  } else if (isChecked) {
     style = styles.checked
   } else {
     style = styles.normal
   }
 
-
   return (
-    <button style={styles.normal} value={id} onClick={onClick}>{children}</button>
+    <button style={style} value={id} disabled={isDisable} onClick={onClick}>{children}</button>
   )
 }

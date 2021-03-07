@@ -5,6 +5,9 @@ import { Button } from './components/button/Button'
 const App = () => {
 
   const [result, setResult] = useState()
+  const [selectedColor, setSelectedColor] = useState()
+  const [selectedSize, setSelectedSize] = useState()
+  const [selectedSleeve, setSelectedSleeve] = useState()
 
   const options = variants.options
   const skus = variants.skus
@@ -18,7 +21,9 @@ const App = () => {
 
   const renderColors = () => {
     const colors = options[0].values.map((color) => {
-      return <Button id={color.id} onClick={onClickColor}>{color.value}</Button>
+      console.log('selectedColor', selectedColor)
+      console.log('color.id', color.id)
+      return <Button id={color.id} onClick={onClickColor} isChecked={selectedColor == color.id}>{color.value}</Button>
     })
     return (
       <>
@@ -32,11 +37,12 @@ const App = () => {
       return skus.variants.color == e.currentTarget.value
     })
     setResult(colorResult)
+    setSelectedColor(e.currentTarget.value)
   }
 
   const renderSizes = () => {
     const sizes = options[1].values.map((size) => {
-      return <Button id={size.id} onClick={onClickSize}>{size.value}</Button>
+      return <Button id={size.id} onClick={onClickSize} isDisable={!selectedColor} isChecked={selectedSize == size.id} >{size.value}</Button>
     })
     return (
       <>
@@ -46,15 +52,16 @@ const App = () => {
     )
   }
   const onClickSize = (e) => {
-    const sizeResult = result.filter((size) => {
+    const sizeResult = result && result.filter((size) => {
       return size.variants.size == e.currentTarget.value
     })
     setResult(sizeResult)
+    setSelectedSize(e.currentTarget.value)
   }
 
   const renderSleeves = () => {
     const sleeves = options[2].values.map((sleeve) => {
-      return <Button id={sleeve.id} onClick={onClickSleeve}>{sleeve.value}</Button>
+      return <Button id={sleeve.id} onClick={onClickSleeve} isDisable={!selectedSize} isChecked={selectedSleeve == sleeve.id}>{sleeve.value}</Button>
     })
     return (
       <>
@@ -64,10 +71,11 @@ const App = () => {
     )
   }
   const onClickSleeve = (e) => {
-    const sleeveResult = result.filter((sleeve) => {
+    const sleeveResult = result && result.filter((sleeve) => {
       return sleeve.variants.sleeve == e.currentTarget.value
     })
     setResult(sleeveResult)
+    setSelectedSleeve(e.currentTarget.value)
   }
 
   return (
