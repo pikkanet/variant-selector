@@ -88,6 +88,9 @@ const App = () => {
 
       {renderSleeves()}
 
+      {result && result[0] && <pre>
+        {JSON.stringify(result[0], null, 2)}
+      </pre>}
     </div>
   )
 }
