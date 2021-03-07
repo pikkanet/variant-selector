@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './Button.style'
 
-export const Button = ({ children, isDisable, isCheck }) => {
+export const Button = ({ children, isDisable, isCheck, onClick, id }) => {
 
   let style
   if (isDisable) {
@@ -12,7 +12,8 @@ export const Button = ({ children, isDisable, isCheck }) => {
     style = styles.normal
   }
 
+
   return (
-    <button style={styles.normal}>{children}</button>
+    <button style={styles.normal} value={id} onClick={onClick}>{children}</button>
   )
 }
