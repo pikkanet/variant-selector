@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import variants from './mocks/variants'
 import { Button } from './components/button/Button'
 
@@ -9,8 +9,12 @@ const App = () => {
   const options = variants.options
   const skus = variants.skus
 
-  console.log('options', options)
-  console.log('skus', skus)
+  // console.log('options', options)
+  // console.log('skus', skus)
+
+  useEffect(() => {
+    console.log('result', result)
+  }, [result])
 
   const renderColors = () => {
     const colors = options[0].values.map((color) => {
@@ -24,7 +28,10 @@ const App = () => {
     )
   }
   const onClickColor = (e) => {
-    console.log('e', e.currentTarget.value)
+    const colorResult = skus.filter((skus) => {
+      return skus.variants.color == e.currentTarget.value
+    })
+    setResult(colorResult)
   }
 
   const renderSizes = () => {
@@ -39,7 +46,10 @@ const App = () => {
     )
   }
   const onClickSize = (e) => {
-    console.log('e', e.currentTarget.value)
+    const sizeResult = result.filter((size) => {
+      return size.variants.size == e.currentTarget.value
+    })
+    setResult(sizeResult)
   }
 
   const renderSleeves = () => {
@@ -54,7 +64,10 @@ const App = () => {
     )
   }
   const onClickSleeve = (e) => {
-    console.log('e', e.currentTarget.value)
+    const sleeveResult = result.filter((sleeve) => {
+      return sleeve.variants.sleeve == e.currentTarget.value
+    })
+    setResult(sleeveResult)
   }
 
   return (
@@ -74,6 +87,7 @@ const App = () => {
       {renderSizes()}
 
       {renderSleeves()}
+
     </div>
   )
 }
