@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import variants from './mocks/variants'
 import { Button } from './components/button/Button'
+import styles from './App.style'
 
 const App = () => {
-
   const [filterWithColor, setFilterWithColor] = useState()
   const [filterWithSize, setFilterWithSize] = useState()
   const [result, setResult] = useState()
@@ -14,22 +14,13 @@ const App = () => {
   const options = variants.options
   const skus = variants.skus
 
-  // console.log('options', options)
-  // console.log('skus', skus)
-
-  useEffect(() => {
-    // console.log('filterWithColor', filterWithColor)
-    // console.log('filterWithSize', filterWithSize)
-    // console.log('result', result)
-  }, [filterWithColor, filterWithSize, result])
-
   const renderColors = () => {
     const colors = options[0].values.map((color) => {
       return <Button id={color.id} onClick={onClickColor} isChecked={selectedColor == color.id}>{color.value}</Button>
     })
     return (
       <>
-        <div style={{ fontSize: 22, marginTop: 24, marginBottom: 8 }}>{options[0].title}</div>
+        <div style={styles.varuantTitle}>{options[0].title}</div>
         {colors}
       </>
     )
@@ -55,7 +46,7 @@ const App = () => {
     })
     return (
       <>
-        <div style={{ fontSize: 22, marginTop: 24, marginBottom: 8 }}>{options[1].title}</div>
+        <div style={styles.varuantTitle}>{options[1].title}</div>
         {sizes}
       </>
     )
@@ -79,7 +70,7 @@ const App = () => {
     })
     return (
       <>
-        <div style={{ fontSize: 22, marginTop: 24, marginBottom: 8 }}>{options[2].title}</div>
+        <div style={styles.varuantTitle}>{options[2].title}</div>
         {sleeves}
       </>
     )
@@ -93,15 +84,10 @@ const App = () => {
   }
 
   return (
-    <div style={{ paddingTop: 24, paddingLeft: 24, width: 387 }}>
-      <div style={{ fontSize: 36, fontWeight: 'bold' }}>MAQE Shirt</div>
+    <div style={styles.container}>
+      <div style={styles.title}>MAQE Shirt</div>
       <div
-        style={{
-          height: 1,
-          backgroundColor: '#d3d3d3',
-          width: '100%',
-          marginTop: 8
-        }}
+        style={styles.divider}
       ></div>
 
       {renderColors()}
@@ -110,9 +96,17 @@ const App = () => {
 
       {renderSleeves()}
 
-      {result && result[0] && <pre>
-        {JSON.stringify(result[0], null, 2)}
-      </pre>}
+      {result &&
+        <>
+          <div style={styles.varuantTitle}>
+            Selecting SKU
+        </div>
+          <pre>
+            {JSON.stringify(result, null, 2)}
+          </pre>
+        </>
+      }
+
     </div>
   )
 }
